@@ -1,9 +1,12 @@
-export interface Car { id, name, color }
+export interface Car {
+  id: number;
+  name: string;
+  color: string;
+}
 
-export interface CarsState {
-  cars: Car[];
-  totalCount: number;
+export interface GarageState {
   page: number;
   selectedCarId: number | null;
-  status: 'idle' | 'loading' | 'error';
+  color: string;
+  name: string;
 }

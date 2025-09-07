@@ -1,32 +1,38 @@
-import React, { useState } from 'react';
-import asyncRaceLogo from '../../assets/asyncRaceLogo.png';
+import React from 'react';
 import './Garage.scss';
-import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { generateRandomCars } from '../../utils';
-import { useCreateCarMutation, useGetCarsQuery } from '../../services/carsApi';
-import { FullPageLoader } from '../Loader/Loader';
-import { goToPage } from '../../store/carsSlice';
-// import { fetchCars, createCar, updateCar, deleteCar, startCarEngine, stopCarEngine } from '../store/carsSlice';
+import {
+  useCreateCarMutation,
+  useDeleteCarMutation,
+  useGetCarsQuery,
+  useUpdateCarMutation,
+} from '../../services/carsApi';
+import { Loader } from '../Loader/Loader';
+import { CarIcon } from './CarIcon';
+import { Header } from '../Header/Header';
+import { Footer } from '../Footer/Footer';
+import { setName, selectColor, selectCarForEditing } from '../../store/garageSlice';
 
 const Garage: React.FC = () => {
-  const limit = 10;
-  const page = useAppSelector((s) => s.cars.page)
-  const { data, isFetching } = useGetCarsQuery({ page, limit });
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const limit = 7;
+  const page = useAppSelector((state) => state.garage.page);
+  const selectedCarId = useAppSelector((state) => state.garage.selectedCarId);
+  const color = useAppSelector((state) => state.garage.color);
+  const name = useAppSelector((state) => state.garage.name);
+  const { data, isFetching } = useGetCarsQuery({ page, limit });
+  const cars = data?.cars ?? [];
   const total = data?.total ?? 0;
-  const totalPages = Math.max(1, Math.ceil(total / limit));
-  const cars = data?.items ?? [];
   const [createCar, { isLoading }] = useCreateCarMutation();
-  const [name, setName] = useState(''); // form state for car name
-  const [color, setColor] = useState('#000000'); // form state for car color (default black)
+  const [updateCar] = useUpdateCarMutation();
+  const [deleteCar] = useDeleteCarMutation();
 
-  const handleGenerateCars = async () => {
-    const cars = generateRandomCars();
-    await Promise.all(cars.map((car) => createCar(car).unwrap()));
+  const handleGenerateCars = () => {
+    generateRandomCars().forEach((car) => {
+      createCar(car);
+    });
   };
-
 
   const handleStartRace = () => {
     // cars.forEach((car) => handleStart(car.id));
@@ -36,29 +42,37 @@ const Garage: React.FC = () => {
     // cars.forEach((car) => handleReset(car.id));
   };
 
+  const handleCreate = () => {
+    createCar({ name, color });
+  };
+
+  const handleUpdate = () => {
+    updateCar({ id: selectedCarId!, name, color });
+  };
+
   return (
     <>
-      {(isLoading || isFetching) && <FullPageLoader />}
+      {(isLoading || isFetching) && <Loader />}
       <div className="garage-view">
-        <div className="garage-header">
-          <h2 className="garage-title">Garage</h2>
-          <img className="garage-logo" src={asyncRaceLogo} alt="Async Race Logo" />
-          <button className="garage-button large purple" onClick={() => navigate('/winners')}>
-            Winners
-          </button>
-        </div>
+        <Header />
 
         <div className="garage-control-panel">
           <div className="garage-control-panel-form">
             <input
               type="text"
               value={name}
-              placeholder="Car name"
-              onChange={(e) => setName(e.target.value)}
+              placeholder="Type brand and model"
+              onChange={(e) => dispatch(setName(e.target.value))}
             />
-            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
-            {/* <button onClick={handleCreate}>Create</button>
-        <button onClick={handleUpdate} disabled={!selectedCarId}>Update</button> */}
+            <input
+              type="color"
+              value={color}
+              onChange={(e) => dispatch(selectColor(e.target.value))}
+            />
+            <button onClick={handleCreate}>Create</button>
+            <button onClick={handleUpdate} disabled={!selectedCarId}>
+              Update
+            </button>
           </div>
           <div className="garage-control-panel-controls">
             <button className="garage-button small green" onClick={handleStartRace}>
@@ -76,46 +90,37 @@ const Garage: React.FC = () => {
         <div className="cars-list">
           {cars.map((car) => (
             <div className="car-item" key={car.id}>
-              {/* Car controls: start, stop, select, delete */}
-              {/* <button onClick={() => handleStart(car.id)}>Start</button>
-            <button onClick={() => handleStop(car.id)}>Stop</button>
-            <button onClick={() => dispatch(selectCarForEditing(car))}>Select</button>
-            <button onClick={() => dispatch(deleteCar(car.id))}>Delete</button> */}
-              {/* Car name and colored icon */}
-              <span>{car.name}</span>
-              <div className="car-icon" style={{ backgroundColor: car.color }}>
-                🚗
+              <div className="car-item-buttons">
+                <div className="car-item-buttons__edit">
+                  <button
+                    className="garage-button small purple"
+                    onClick={() => dispatch(selectCarForEditing(car.id))}
+                  >
+                    Select
+                  </button>
+                  <button className="garage-button small red" onClick={() => deleteCar(car.id)}>
+                    Delete
+                  </button>
+                </div>
+                <div className="car-item-buttons__engine">
+                  <button className="garage-button small green" onClick={() => handleStart(car.id)}>
+                    Start
+                  </button>
+                  <button className="garage-button small red" onClick={() => handleStop(car.id)}>
+                    Stop
+                  </button>
+                </div>
               </div>
-              {/* Track (e.g., a line or finish flag) */}
-              <div className="track"></div>
+              <CarIcon color={car.color} />
+              <span className="garage-text">{car.name}</span>
+              <div className="garage-text">
+                _____________________________________________________________________________________________________________________________________________________________________________________________
+              </div>
             </div>
           ))}
         </div>
 
-        <div className="garage-footer">
-          <span className="garage-text">
-            Garage ({total})
-          </span>
-          <div className="garage-pagination">
-            <button
-              className="garage-button small purple"
-              onClick={() => dispatch(goToPage(page - 1))}
-              disabled={page <= 1}
-            >
-              Prev
-            </button>
-            <span className="garage-text">
-              Page {page} / {totalPages}
-            </span>
-            <button
-              className="garage-button small purple"
-              onClick={() => dispatch(goToPage(page + 1))}
-              disabled={page >= totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </div>
+        <Footer page={page} total={total} limit={limit} />
       </div>
     </>
   );
