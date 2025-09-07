@@ -1,0 +1,27 @@
+.garage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.garage-logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.garage-title {
+  color: aqua;
+  font-size: 32px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: default;
+
+  /* neon glow */
+  text-shadow: 
+    0 0 5px aqua,
+    0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 40px aqua;
+}
