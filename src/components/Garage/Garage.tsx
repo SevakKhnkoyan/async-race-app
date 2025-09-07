@@ -103,10 +103,10 @@ const Garage: React.FC = () => {
                   </button>
                 </div>
                 <div className="car-item-buttons__engine">
-                  <button className="garage-button small green" onClick={() => handleStart(car.id)}>
+                  <button className="garage-button small green" onClick={() => console.log(car.id)}>
                     Start
                   </button>
-                  <button className="garage-button small red" onClick={() => handleStop(car.id)}>
+                  <button className="garage-button small red" onClick={() => console.log(car.id)}>
                     Stop
                   </button>
                 </div>
