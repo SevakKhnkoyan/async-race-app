@@ -1,0 +1,134 @@
+.garage-view {
+  position: relative;
+  min-height: 100vh;
+  background: url('../../assets/brick-wall.png') repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.garage-view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 255, 255, 0.05);
+  pointer-events: none;
+}
+
+.garage-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 16px;
+}
+
+.garage-logo {
+  max-width: 200px;
+  height: auto;
+}
+
+.garage-title {
+  color: aqua;
+  font-size: 32px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  cursor: default;
+
+  /* neon glow */
+  text-shadow: 
+    0 0 5px aqua,
+    0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 40px aqua;
+}
+
+.garage-control-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 8px auto;
+  gap: 16px;
+}
+
+.garage-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px;
+  gap: 16px;
+}
+
+.garage-control-panel-controls,
+.garage-pagination {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.garage-button {
+  background: transparent;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.garage-button.small {
+  border-radius: 4px;
+  padding: 4px 12px;
+  font-size: 12px;
+}
+
+.garage-button.large {
+  border-radius: 8px;
+  padding: 8px 24px;
+  font-size: 16px;
+}
+
+.garage-button.purple {
+  color: #e0b3ff;
+  border: 2px solid #e0b3ff;
+  box-shadow: 0 0 8px #e0b3ff, 0 0 16px #e0b3ff;
+}
+.garage-button.purple:hover {
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 12px #e0b3ff, 0 0 24px #e0b3ff, 0 0 36px #e0b3ff;
+}
+
+.garage-button.green {
+  color: #b3ffd0;
+  border: 2px solid #b3ffd0;
+  box-shadow: 0 0 8px #b3ffd0, 0 0 16px #b3ffd0;
+}
+.garage-button.green:hover {
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 12px #b3ffd0, 0 0 24px #b3ffd0, 0 0 36px #b3ffd0;
+}
+
+.garage-button.red {
+  color: #ffb3b3;
+  border: 2px solid #ffb3b3;
+  box-shadow: 0 0 8px #ffb3b3, 0 0 16px #ffb3b3;
+}
+.garage-button.red:hover {
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 12px #ffb3b3, 0 0 24px #ffb3b3, 0 0 36px #ffb3b3;
+}
+
+.garage-text{
+  color: aqua;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  cursor: default;
+
+  /* neon glow */
+  text-shadow: 
+    0 0 5px aqua,
+    0 0 10px aqua,
+    0 0 20px aqua,
+    0 0 40px aqua;
+}
