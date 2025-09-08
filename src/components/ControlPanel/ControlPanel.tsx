@@ -5,13 +5,13 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useUpdateCarMutation } from '../../services/carsApi';
 import { generateRandomCars } from '../../utils';
 import type { Car } from '../../types';
+import { MAX_NAME_LENGTH } from '../../constants';
 
 type ControlPanelProps = {
   onCreate: (car: Omit<Car, 'id'>) => void | Promise<unknown>;
 };
 
 export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate }) => {
-  const MAX_NAME_LENGTH = 50;
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.garage.name);
   const color = useAppSelector((state) => state.garage.color);

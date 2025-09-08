@@ -12,12 +12,12 @@ import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { selectCarForEditing } from '../../store/garageSlice';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
+import { PAGE_SIZE } from '../../constants';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
-  const limit = 7;
   const page = useAppSelector((state) => state.garage.page);
-  const { data, isFetching } = useGetCarsQuery({ page, limit });
+  const { data, isFetching } = useGetCarsQuery({ page, limit: PAGE_SIZE });
   const cars = data?.cars ?? [];
   const total = data?.total ?? 0;
   const [createCar, { isLoading: isCreating }] = useCreateCarMutation();
@@ -64,7 +64,7 @@ const Garage: React.FC = () => {
           ))}
         </div>
 
-        <Footer page={page} total={total} limit={limit} />
+        <Footer page={page} total={total} limit={PAGE_SIZE} />
       </div>
     </>
   );
