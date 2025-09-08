@@ -14,20 +14,6 @@
   pointer-events: none;
 }
 
-.garage-control-panel {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: 8px auto;
-  gap: 16px;
-}
-
-.garage-control-panel-controls {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
 .garage-button {
   background: transparent;
   font-weight: bold;
@@ -53,6 +39,7 @@
   border: 2px solid #e0b3ff;
   box-shadow: 0 0 8px #e0b3ff, 0 0 16px #e0b3ff;
 }
+
 .garage-button.purple:hover {
   color: #fff;
   border-color: #fff;
@@ -64,6 +51,7 @@
   border: 2px solid #b3ffd0;
   box-shadow: 0 0 8px #b3ffd0, 0 0 16px #b3ffd0;
 }
+
 .garage-button.green:hover {
   color: #fff;
   border-color: #fff;
@@ -75,6 +63,7 @@
   border: 2px solid #ffb3b3;
   box-shadow: 0 0 8px #ffb3b3, 0 0 16px #ffb3b3;
 }
+
 .garage-button.red:hover {
   color: #fff;
   border-color: #fff;
