@@ -2,16 +2,20 @@ import './ControlPanel.scss';
 import { useAppDispatch, useAppSelector, useDebounce } from '../../store/hooks';
 import { selectColor, setName } from '../../store/garageSlice';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { useCreateCarMutation, useUpdateCarMutation } from '../../services/carsApi';
+import { useUpdateCarMutation } from '../../services/carsApi';
 import { generateRandomCars } from '../../utils';
+import type { Car } from '../../types';
 
-export const ControlPanel = () => {
+type ControlPanelProps = {
+  onCreate: (car: Omit<Car, 'id'>) => void | Promise<unknown>;
+};
+
+export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate }) => {
   const MAX_NAME_LENGTH = 50;
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.garage.name);
   const color = useAppSelector((state) => state.garage.color);
   const selectedCarId = useAppSelector((state) => state.garage.selectedCarId);
-  const [createCar] = useCreateCarMutation();
   const [updateCar] = useUpdateCarMutation();
   const [draftName, setDraftName] = useState(name);
   const isNameValid = draftName.length > 0;
@@ -33,7 +37,7 @@ export const ControlPanel = () => {
   };
 
   const handleCreate = () => {
-    createCar({ name: draftName, color });
+    onCreate({ name: draftName, color });
   };
 
   const handleUpdate = () => {
@@ -42,7 +46,7 @@ export const ControlPanel = () => {
 
   const handleGenerateCars = () => {
     generateRandomCars().forEach((car) => {
-      createCar(car);
+      onCreate(car);
     });
   };
 

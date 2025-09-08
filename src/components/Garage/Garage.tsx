@@ -20,16 +20,16 @@ const Garage: React.FC = () => {
   const { data, isFetching } = useGetCarsQuery({ page, limit });
   const cars = data?.cars ?? [];
   const total = data?.total ?? 0;
-  const [, { isLoading }] = useCreateCarMutation();
+  const [createCar, { isLoading: isCreating }] = useCreateCarMutation();
   const [deleteCar] = useDeleteCarMutation();
 
   return (
     <>
-      {(isLoading || isFetching) && <Loader />}
+      {(isCreating || isFetching) && <Loader />}
       <div className="garage-view">
         <Header />
-        
-        <ControlPanel />
+
+        <ControlPanel onCreate={createCar} />
 
         <div className="cars-list">
           {cars.map((car) => (
