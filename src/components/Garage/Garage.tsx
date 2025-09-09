@@ -7,12 +7,12 @@ import {
   useGetCarsQuery,
 } from '../../services/carsApi';
 import { Loader } from '../Loader/Loader';
-import { CarIcon } from './CarIcon';
 import { Header } from '../Header/Header';
 import { Footer } from '../Footer/Footer';
 import { goToPage, selectCarForEditing } from '../../store/garageSlice';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
 import { PAGE_SIZE } from '../../constants';
+import { CarRow } from '../CarRow/CarRow';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -46,37 +46,12 @@ const Garage: React.FC = () => {
             </div>
           ) : (
             cars.map((car) => (
-              <div className="car-item" key={car.id}>
-                <div className="car-item-buttons">
-                  <div className="car-item-buttons__edit">
-                    <button
-                      className="garage-button small purple"
-                      onClick={() => dispatch(selectCarForEditing(car.id))}
-                    >
-                      Select
-                    </button>
-                    <button className="garage-button small red" onClick={() => deleteCar(car.id)}>
-                      Delete
-                    </button>
-                  </div>
-                  <div className="car-item-buttons__engine">
-                    <button
-                      className="garage-button small green"
-                      onClick={() => console.log(car.id)}
-                    >
-                      Start
-                    </button>
-                    <button className="garage-button small red" onClick={() => console.log(car.id)}>
-                      Stop
-                    </button>
-                  </div>
-                </div>
-                <CarIcon color={car.color} />
-                <span className="garage-text">{car.name}</span>
-                <div className="garage-text">
-                  _____________________________________________________________________________________________________________________________________________________________________________________________
-                </div>
-              </div>
+              <CarRow
+                key={car.id}
+                car={car}
+                onSelect={(id) => dispatch(selectCarForEditing(id))}
+                onDelete={(id) => deleteCar(id)}
+              />
             ))
           )}
         </div>

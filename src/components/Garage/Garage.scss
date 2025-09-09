@@ -31,7 +31,7 @@
 .garage-button.large {
   border-radius: 8px;
   padding: 8px 24px;
-  font-size: 16px;
+  font-size: 24px;
 }
 
 .garage-button.purple {
@@ -85,19 +85,6 @@
     0 0 40px aqua;
 }
 
-.car-item-buttons {
-  display: grid;
-  grid-template-columns: max-content max-content;
-  gap: 16px;
-
-  &__edit,
-  &__engine {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
 .garage-empty {
   margin: 24px auto;
   padding: 24px;
@@ -118,4 +105,25 @@
 
 .garage-empty__hint {
   opacity: .85;
+}
+
+.car-row {
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+}
+
+.car-row-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 8px
+}
+
+.car-row-buttons__edit,
+.car-row-buttons__engine {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }

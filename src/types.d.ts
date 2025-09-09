@@ -10,3 +10,8 @@ export interface GarageState {
   color: string;
   name: string;
 }
+
+export type PaginatedCars = { cars: Car[]; total: number };
+
+export type StartEngineResp = { velocity: number; distance: number };
+export type DriveResp = { success: boolean };

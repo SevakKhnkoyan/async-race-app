@@ -1,7 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Car } from '../types';
-
-type PaginatedCars = { cars: Car[]; total: number };
+import { Car, DriveResp, PaginatedCars, StartEngineResp } from '../types';
 
 export const carsApi = createApi({
   reducerPath: 'cars/api',
@@ -56,8 +54,36 @@ export const carsApi = createApi({
         { type: 'Cars', id: 'LIST' },
       ],
     }),
+    startEngine: build.mutation<StartEngineResp, number>({
+      query: (id) => ({
+        url: `/engine`,
+        method: 'PATCH',
+        params: { id, status: 'started' },
+      }),
+    }),
+    driveEngine: build.mutation<DriveResp, number>({
+      query: (id) => ({
+        url: `/engine`,
+        method: 'PATCH',
+        params: { id, status: 'drive' },
+      }),
+    }),
+    stopEngine: build.mutation<void, number>({
+      query: (id) => ({
+        url: `/engine`,
+        method: 'PATCH',
+        params: { id, status: 'stopped' },
+      }),
+    }),
   }),
 });
 
-export const { useGetCarsQuery, useCreateCarMutation, useUpdateCarMutation, useDeleteCarMutation } =
-  carsApi;
+export const {
+  useGetCarsQuery,
+  useCreateCarMutation,
+  useUpdateCarMutation,
+  useDeleteCarMutation,
+  useDriveEngineMutation,
+  useStartEngineMutation,
+  useStopEngineMutation,
+} = carsApi;
