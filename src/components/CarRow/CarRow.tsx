@@ -1,12 +1,12 @@
 import './CarRow.scss';
-import React, { useRef, useState } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
 import { CarIcon } from './CarIcon';
 import {
   useStartEngineMutation,
   useDriveEngineMutation,
   useStopEngineMutation,
 } from '../../services/carsApi';
-import type { Car } from '../../types';
+import type { Car, CarRowHandle } from '../../types';
 
 type Props = {
   car: Car;
@@ -14,10 +14,10 @@ type Props = {
   onDelete: (id: number) => void;
 };
 
-export const CarRow: React.FC<Props> = ({ car, onSelect, onDelete }) => {
+export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete }, ref) => {
   const laneRef = useRef<HTMLDivElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
-  const animRef = useRef<Animation | null>(null); // Web Animations API handle
+  const animRef = useRef<Animation | null>(null);
 
   const [startEngine] = useStartEngineMutation();
   const [driveEngine] = useDriveEngineMutation();
@@ -27,25 +27,19 @@ export const CarRow: React.FC<Props> = ({ car, onSelect, onDelete }) => {
   const [isDriving, setIsDriving] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
 
-  const start = async () => {
+  const start = useCallback(async () => {
+    if (isStarting || isDriving || isBroken) return;
     try {
       setIsBroken(false);
       setIsStarting(true);
 
-      // 1) Ask for velocity & distance
       const { velocity, distance } = await startEngine(car.id).unwrap();
-
-      // 2) Compute animation distance (pixels) based on lane width
       const laneW = laneRef.current?.clientWidth ?? 0;
       const carW = carRef.current?.clientWidth ?? 0;
-      const maxX = Math.max(0, laneW - carW); // px to finish line
+      const maxX = Math.max(0, laneW - carW);
+      const durationMs = Math.max(300, Math.round(distance / velocity));
 
-      // The API says you can compute finish time from "started" response
-      const durationMs = Math.max(300, Math.round(distance / velocity)); // linear
-
-      // 3) Start animation (linear to the finish)
       if (carRef.current) {
-        // cancel any previous animation
         animRef.current?.cancel();
         animRef.current = carRef.current.animate(
           [{ transform: 'translateX(0)' }, { transform: `translateX(${maxX}px)` }],
@@ -56,36 +50,32 @@ export const CarRow: React.FC<Props> = ({ car, onSelect, onDelete }) => {
       setIsStarting(false);
       setIsDriving(true);
 
-      // 4) Switch engine to drive mode concurrently
       driveEngine(car.id)
         .unwrap()
         .catch((err) => {
-          // If server fails with 500, stop the animation where it is
-          if (err?.status === 500) {
+          if (err?.originalStatus === 500) {
             setIsBroken(true);
             setIsDriving(false);
-            animRef.current?.pause(); // freezes at current position
+            animRef.current?.pause();
           }
         });
     } catch {
       setIsStarting(false);
       setIsDriving(false);
     }
-  };
+  }, [car.id, isStarting, isDriving, isBroken, startEngine, driveEngine]);
 
-  const stop = async () => {
+  const stop = useCallback(async () => {
     try {
       await stopEngine(car.id).unwrap();
     } finally {
-      // Return to start smoothly
       setIsDriving(false);
       setIsBroken(false);
       if (animRef.current) {
-        // Jump to current position, then animate back to 0
         const currentTime = animRef.current.currentTime ?? 0;
         const endTime = animRef.current.effect?.getTiming().duration as number;
         animRef.current.pause();
-        // Apply current transform as inline style so we can animate back
+
         const progress = endTime ? Number(currentTime) / Number(endTime) : 0;
         const laneW = laneRef.current?.clientWidth ?? 0;
         const carW = carRef.current?.clientWidth ?? 0;
@@ -110,11 +100,12 @@ export const CarRow: React.FC<Props> = ({ car, onSelect, onDelete }) => {
         animRef.current.cancel();
         animRef.current = null;
       } else if (carRef.current) {
-        // No running animation: just reset
         carRef.current.style.transform = 'translateX(0)';
       }
     }
-  };
+  }, [car.id, stopEngine]);
+
+  useImperativeHandle(ref, () => ({ start, stop }), [start, stop]);
 
   return (
     <div className="car-row">
@@ -168,4 +159,4 @@ export const CarRow: React.FC<Props> = ({ car, onSelect, onDelete }) => {
       </div>
     </div>
   );
-};
+});

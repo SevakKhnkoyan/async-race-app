@@ -21,22 +21,25 @@
   right: 64px;
   top: 4px;
   bottom: 4px;
-  width: 8px;
+  width: 9px;
+
+  --light: rgba(255, 255, 255, 0.9);
+  --dark:  rgba(0, 0, 0, 0.4);
+  --cell:  6px;
+
   background:
-    repeating-linear-gradient(
-      45deg,
-      rgba(255,255,255,.9) 0 3px,
-      rgba(0,0,0,.4) 3px 6px
-    );
+    conic-gradient(
+      var(--light) 25%, var(--dark) 0 50%,
+      var(--light) 0 75%, var(--dark) 0
+    )
+    0 0 / var(--cell) var(--cell);
   box-shadow: 0 0 8px rgba(179,255,208,.6), 0 0 16px rgba(179,255,208,.3);
 }
 
 .garage-car {
   position: absolute;
-  display: flex;
-  align-items: center;
 }
 
 .garage-car--broken {
-  filter: grayscale(0.6) brightness(0.85);
+  filter: grayscale(0.6) brightness(0.6);
 }

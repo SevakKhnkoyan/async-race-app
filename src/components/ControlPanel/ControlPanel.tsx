@@ -9,9 +9,11 @@ import { MAX_NAME_LENGTH } from '../../constants';
 
 type ControlPanelProps = {
   onCreate: (car: Omit<Car, 'id'>) => void | Promise<unknown>;
+  onStartRace?: () => void;
+  onResetRace?: () => void;
 };
 
-export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate }) => {
+export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate, onStartRace, onResetRace }) => {
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.garage.name);
   const color = useAppSelector((state) => state.garage.color);
@@ -50,14 +52,6 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate }) => {
     });
   };
 
-  const handleStartRace = () => {
-    // cars.forEach((car) => handleStart(car.id));
-  };
-
-  const handleResetRace = () => {
-    // cars.forEach((car) => handleReset(car.id));
-  };
-
   return (
     <div className="garage-control-panel">
       <div className="garage-control-panel-form">
@@ -93,10 +87,10 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({ onCreate }) => {
         </button>
       </div>
       <div className="garage-control-panel-controls">
-        <button type="button" className="garage-button small green" onClick={handleStartRace}>
+        <button type="button" className="garage-button small green" onClick={onStartRace}>
           Start Race
         </button>
-        <button type="button" className="garage-button small red" onClick={handleResetRace}>
+        <button type="button" className="garage-button small red" onClick={onResetRace}>
           Reset Race
         </button>
         <button type="button" className="garage-button small green" onClick={handleGenerateCars}>

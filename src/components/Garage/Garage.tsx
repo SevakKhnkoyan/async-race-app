@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './Garage.scss';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -13,6 +13,7 @@ import { goToPage, selectCarForEditing } from '../../store/garageSlice';
 import { ControlPanel } from '../ControlPanel/ControlPanel';
 import { PAGE_SIZE } from '../../constants';
 import { CarRow } from '../CarRow/CarRow';
+import { CarRowHandle } from '../../types';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -22,6 +23,7 @@ const Garage: React.FC = () => {
   const total = data?.total ?? 0;
   const [createCar, { isLoading: isCreating }] = useCreateCarMutation();
   const [deleteCar] = useDeleteCarMutation();
+  const rowRefs = useRef(new Map<number, CarRowHandle>());
 
   // If current page becomes empty but there are cars overall, go back one page
   useEffect(() => {
@@ -30,13 +32,26 @@ const Garage: React.FC = () => {
     }
   }, [cars.length, total, page, isFetching, dispatch]);
 
+  const attachRowRef = (id: number) => (inst: CarRowHandle | null) => {
+    if (inst) rowRefs.current.set(id, inst);
+    else rowRefs.current.delete(id);
+  };
+
+  const startAll = () => {
+    rowRefs.current.forEach((handle) => handle.start?.());
+  };
+
+  const resetAll = () => {
+    rowRefs.current.forEach((handle) => handle.stop?.());
+  };
+
   return (
     <>
       {(isCreating || isFetching) && <Loader />}
       <div className="garage-view">
         <Header />
 
-        <ControlPanel onCreate={createCar} />
+        <ControlPanel onCreate={createCar} onStartRace={startAll} onResetRace={resetAll} />
 
         <div className="cars-list">
           {!isFetching && total === 0 ? (
@@ -48,6 +63,7 @@ const Garage: React.FC = () => {
             cars.map((car) => (
               <CarRow
                 key={car.id}
+                ref={attachRowRef(car.id)}
                 car={car}
                 onSelect={(id) => dispatch(selectCarForEditing(id))}
                 onDelete={(id) => deleteCar(id)}
