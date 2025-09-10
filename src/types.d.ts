@@ -20,3 +20,9 @@ export type CarRowHandle = {
   start: () => Promise<void> | void;
   stop:  () => Promise<void> | void;
 };
+
+export type WinnerInfo = { id: number; name: string; timeSec: number };
+
+export type RaceState = {
+  winner: WinnerInfo | null;
+};

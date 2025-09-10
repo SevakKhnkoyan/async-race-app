@@ -7,6 +7,8 @@ import {
   useStopEngineMutation,
 } from '../../services/carsApi';
 import type { Car, CarRowHandle } from '../../types';
+import { useAppDispatch } from '../../store/hooks';
+import { declareWinner, resetWinner } from '../../store/winnersSlice';
 
 type Props = {
   car: Car;
@@ -22,10 +24,12 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
   const [startEngine] = useStartEngineMutation();
   const [driveEngine] = useDriveEngineMutation();
   const [stopEngine] = useStopEngineMutation();
+  const dispatch = useAppDispatch();
 
   const [isStarting, setIsStarting] = useState(false);
   const [isDriving, setIsDriving] = useState(false);
   const [isBroken, setIsBroken] = useState(false);
+  const [atStart, setAtStart] = useState(true);
 
   const start = useCallback(async () => {
     if (isStarting || isDriving || isBroken) return;
@@ -38,6 +42,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       const carW = carRef.current?.clientWidth ?? 0;
       const maxX = Math.max(0, laneW - carW);
       const durationMs = Math.max(300, Math.round(distance / velocity));
+      const timeSec = durationMs / 1000;
 
       if (carRef.current) {
         animRef.current?.cancel();
@@ -45,6 +50,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
           [{ transform: 'translateX(0)' }, { transform: `translateX(${maxX}px)` }],
           { duration: durationMs, easing: 'linear', fill: 'forwards' },
         );
+        setAtStart(false);
       }
 
       setIsStarting(false);
@@ -52,6 +58,10 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
 
       driveEngine(car.id)
         .unwrap()
+        .then(() => {
+          // report attempt; slice accepts only the first finisher
+          dispatch(declareWinner({ id: car.id, name: car.name, timeSec }));
+        })
         .catch((err) => {
           if (err?.originalStatus === 500) {
             setIsBroken(true);
@@ -63,7 +73,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       setIsStarting(false);
       setIsDriving(false);
     }
-  }, [car.id, isStarting, isDriving, isBroken, startEngine, driveEngine]);
+  }, [car.id, car.name, dispatch, isStarting, isDriving, isBroken, startEngine, driveEngine]);
 
   const stop = useCallback(async () => {
     try {
@@ -92,6 +102,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
                 if (!carRef.current) return;
                 carRef.current.style.transition = '';
                 carRef.current.style.transform = '';
+                setAtStart(true);
               },
               { once: true },
             );
@@ -101,7 +112,9 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
         animRef.current = null;
       } else if (carRef.current) {
         carRef.current.style.transform = 'translateX(0)';
+        setAtStart(true);
       }
+      dispatch(resetWinner());
     }
   }, [car.id, stopEngine]);
 
@@ -139,7 +152,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
             className="garage-button small red"
             type="button"
             onClick={stop}
-            disabled={isStarting}
+            disabled={isStarting || atStart}
           >
             Reset
           </button>

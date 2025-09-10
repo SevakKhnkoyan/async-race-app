@@ -2,13 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import garageReducer from './garageSlice.ts';
 import { carsApi } from '../services/carsApi.ts';
 import { setupListeners } from '@reduxjs/toolkit/query';
-// import winnersReducer from './winnersSlice.ts';
+import winnersReducer from './winnersSlice.ts';
 
 const store = configureStore({
   reducer: {
     [carsApi.reducerPath]: carsApi.reducer,
     garage: garageReducer,
-    // winners: winnersReducer,
+    winners: winnersReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(carsApi.middleware),
 });

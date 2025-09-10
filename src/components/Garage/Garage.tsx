@@ -14,6 +14,7 @@ import { ControlPanel } from '../ControlPanel/ControlPanel';
 import { PAGE_SIZE } from '../../constants';
 import { CarRow } from '../CarRow/CarRow';
 import { CarRowHandle } from '../../types';
+import { WinnerPopup } from '../WinnerPopup/WinnerPopup';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Garage: React.FC = () => {
   const [createCar, { isLoading: isCreating }] = useCreateCarMutation();
   const [deleteCar] = useDeleteCarMutation();
   const rowRefs = useRef(new Map<number, CarRowHandle>());
+  const winner = useAppSelector((s) => s.winners.winner);
 
   // If current page becomes empty but there are cars overall, go back one page
   useEffect(() => {
@@ -48,6 +50,8 @@ const Garage: React.FC = () => {
   return (
     <>
       {(isCreating || isFetching) && <Loader />}
+      {winner && <WinnerPopup />}
+
       <div className="garage-view">
         <Header />
 
