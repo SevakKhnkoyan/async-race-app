@@ -5,10 +5,10 @@ import {
   useStartEngineMutation,
   useDriveEngineMutation,
   useStopEngineMutation,
-} from '../../services/carsApi';
-import type { Car, CarRowHandle } from '../../types';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { declareWinner, resetWinner } from '../../store/winnersSlice';
+} from '../../../services/carsApi';
+import type { Car, CarRowHandle } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { declareWinner, resetWinner } from '../../../store/winnersSlice';
 
 type Props = {
   car: Car;
@@ -126,7 +126,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       <div className="car-row-buttons">
         <div className="car-row-buttons__edit">
           <button
-            className={`garage-button small ${ selectedCarId === car.id ? 'green' : 'purple'}`}
+            className={`garage-button small ${selectedCarId === car.id ? 'green' : 'purple'}`}
             type="button"
             onClick={() => onSelect(car.id)}
           >

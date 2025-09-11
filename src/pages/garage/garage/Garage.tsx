@@ -1,20 +1,20 @@
 import React, { useEffect, useRef } from 'react';
 import './Garage.scss';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   useCreateCarMutation,
   useDeleteCarMutation,
   useGetCarsQuery,
-} from '../../services/carsApi';
-import { Loader } from '../Loader/Loader';
-import { Header } from '../Header/Header';
-import { Footer } from '../Footer/Footer';
-import { goToPage, selectCarForEditing } from '../../store/garageSlice';
-import { ControlPanel } from '../ControlPanel/ControlPanel';
-import { PAGE_SIZE } from '../../constants';
-import { CarRow } from '../CarRow/CarRow';
-import { CarRowHandle } from '../../types';
-import { WinnerPopup } from '../WinnerPopup/WinnerPopup';
+} from '../../../services/carsApi';
+import { Loader } from '../../../components/loader/Loader';
+import { Header } from '../../../components/header/Header';
+import { Footer } from '../../../components/footer/Footer';
+import { goToPage, selectCarForEditing } from '../../../store/garageSlice';
+import { ControlPanel } from '../controlPanel/ControlPanel';
+import { PAGE_SIZE } from '../../../constants';
+import { CarRow } from '../carRow/CarRow';
+import { CarRowHandle } from '../../../types';
+import { WinnerPopup } from '../winnerPopup/WinnerPopup';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();

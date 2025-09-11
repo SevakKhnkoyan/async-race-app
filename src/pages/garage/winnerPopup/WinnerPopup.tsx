@@ -1,12 +1,12 @@
 import './WinnerPopup.scss';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useEffect } from 'react';
 import {
   useCreateWinnerMutation,
   useLazyGetWinnerQuery,
   useUpdateWinnerMutation,
-} from '../../services/winnersApi';
-import { resetWinner } from '../../store/winnersSlice';
+} from '../../../services/winnersApi';
+import { resetWinner } from '../../../store/winnersSlice';
 
 export const WinnerPopup = () => {
   const winner = useAppSelector((s) => s.winners.winner);

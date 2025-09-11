@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Garage from './components/Garage/Garage';
-import Winners from './components/Winners/Winners';
+import Garage from './pages/garage/garage/Garage';
+import Winners from './pages/winners/Winners';
 
 const App: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Garage />} />
         <Route path="/winners" element={<Winners />} />
-        <Route path="*" element={<Navigate to="/" replace />} />  {/* redirect unknown routes */}
+        <Route path="*" element={<Navigate to="/" replace />} /> {/* redirect unknown routes */}
       </Routes>
     </BrowserRouter>
   );

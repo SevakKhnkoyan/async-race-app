@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Header } from '../Header/Header';
+import { Header } from '../../components/header/Header';
 import type { WinnerInfo, WinnerSortField, SortOrder } from '../../types';
 import './Winners.scss';
 import { useGetCarQuery } from '../../services/carsApi';
 import { useGetWinnersQuery } from '../../services/winnersApi';
-import { CarIcon } from '../CarRow/CarIcon';
-import { Loader } from '../Loader/Loader';
-import { Footer } from '../Footer/Footer';
+import { CarIcon } from '../garage/carRow/CarIcon';
+import { Loader } from '../../components/loader/Loader';
+import { Footer } from '../../components/footer/Footer';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { goToPageWinners } from '../../store/winnersSlice';
 
