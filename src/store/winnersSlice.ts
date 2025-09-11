@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RaceState, WinnerInfo } from '../types';
 
-const initialState: RaceState = { winner: null };
+const initialState: RaceState = { winner: null, page: 1 };
 
 const raceSlice = createSlice({
   name: 'winners',
@@ -14,8 +14,11 @@ const raceSlice = createSlice({
     resetWinner(state) {
       if (state.winner) state.winner = null;
     },
+    goToPageWinners(state, action: PayloadAction<number>) {
+      state.page = action.payload;
+    },
   },
 });
 
-export const { declareWinner, resetWinner } = raceSlice.actions;
+export const { declareWinner, resetWinner, goToPageWinners } = raceSlice.actions;
 export default raceSlice.reducer;

@@ -1,6 +1,8 @@
 import './Footer.scss';
 import { useAppDispatch } from '../../store/hooks';
 import { goToPage } from '../../store/garageSlice';
+import { useLocation } from 'react-router-dom';
+import { goToPageWinners } from '../../store/winnersSlice';
 
 type FooterProps = {
   page: number;
@@ -10,16 +12,21 @@ type FooterProps = {
 
 export const Footer: React.FC<FooterProps> = ({ page, total, limit }) => {
   const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
+  const isWinners = pathname === '/winners';
+  const title = isWinners ? 'Winners' : 'Garage';
   const totalPages = Math.max(1, Math.ceil(total / limit));
 
   return (
     <div className="garage-footer">
-      <span className="garage-text">Garage ({total})</span>
+      <span className="garage-text">
+        {title} ({total})
+      </span>
       <div className="garage-pagination">
         <button
           type="button"
           className="garage-button small purple"
-          onClick={() => dispatch(goToPage(page - 1))}
+          onClick={() => dispatch(isWinners ? goToPageWinners(page - 1) : goToPage(page - 1))}
           disabled={page <= 1}
         >
           Prev
@@ -30,7 +37,7 @@ export const Footer: React.FC<FooterProps> = ({ page, total, limit }) => {
         <button
           type="button"
           className="garage-button small purple"
-          onClick={() => dispatch(goToPage(page + 1))}
+          onClick={() => dispatch(isWinners ? goToPageWinners(page + 1) : goToPage(page + 1))}
           disabled={page >= totalPages}
         >
           Next

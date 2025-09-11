@@ -52,7 +52,7 @@ const Garage: React.FC = () => {
       {(isCreating || isFetching) && <Loader />}
       {winner && <WinnerPopup />}
 
-      <div className="garage-view">
+      <div className="view">
         <Header />
 
         <ControlPanel onCreate={createCar} onStartRace={startAll} onResetRace={resetAll} />

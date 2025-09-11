@@ -75,10 +75,15 @@ export const carsApi = createApi({
         params: { id, status: 'stopped' },
       }),
     }),
+    getCar: build.query<Car, number>({
+      query: (id) => `/garage/${id}`,
+      providesTags: (_res, _err, id) => [{ type: 'Cars', id }],
+    }),
   }),
 });
 
 export const {
+  useGetCarQuery,
   useGetCarsQuery,
   useCreateCarMutation,
   useUpdateCarMutation,

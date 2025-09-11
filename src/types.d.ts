@@ -18,11 +18,16 @@ export type DriveResp = { success: boolean };
 
 export type CarRowHandle = {
   start: () => Promise<void> | void;
-  stop:  () => Promise<void> | void;
+  stop: () => Promise<void> | void;
 };
 
-export type WinnerInfo = { id: number; name: string; timeSec: number };
+export type WinnerInfo = { id: number; name: string; wins?: number; time: number };
 
 export type RaceState = {
   winner: WinnerInfo | null;
+  page: number;
 };
+
+export type WinnerSortField = 'wins' | 'time';
+
+export type SortOrder = 'ASC' | 'DESC';

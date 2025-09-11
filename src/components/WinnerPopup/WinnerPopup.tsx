@@ -20,20 +20,30 @@ export const WinnerPopup = () => {
 
     (async () => {
       try {
-        await createWinner({ id: winner.id, wins: 1, time: winner.timeSec }).unwrap();
+        await createWinner({
+          id: winner.id,
+          wins: 1,
+          time: winner.time,
+          name: winner.name,
+        }).unwrap();
       } catch {
         // Duplicate id => update wins/time
         try {
           const existing = await getWinner(winner.id).unwrap();
           const newWins = (existing?.wins ?? 0) + 1;
-          const bestTime = Math.min(existing?.time ?? winner.timeSec, winner.timeSec);
-          await updateWinner({ id: winner.id, wins: newWins, time: bestTime }).unwrap();
+          const bestTime = Math.min(existing?.time ?? winner.time, winner.time);
+          await updateWinner({
+            id: winner.id,
+            wins: newWins,
+            time: bestTime,
+            name: winner.name,
+          }).unwrap();
         } catch {
           /* swallow / log if needed */
         }
       }
     })();
-  }, [winner, createWinner, getWinner, updateWinner]);
+  }, [winner?.id]);
 
   const handleCloseWinner = () => dispatch(resetWinner());
 
@@ -60,7 +70,7 @@ export const WinnerPopup = () => {
         <h3 id="winner-title" className="race-winner-title">
           🏁 <strong>{winner?.name}</strong> wins!
         </h3>
-        <p className="race-winner-time">Time: {winner?.timeSec.toFixed(2)}s</p>
+        <p className="race-winner-time">Time: {winner?.time.toFixed(2)}s</p>
 
         <div className="race-winner-actions">
           <button

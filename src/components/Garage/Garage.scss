@@ -1,4 +1,4 @@
-.garage-view {
+.view {
   position: relative;
   min-height: 100vh;
   background: url('../../assets/brick-wall.png') repeat;
@@ -6,7 +6,7 @@
   background-position: center;
 }
 
-.garage-view::before {
+.view::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -18,7 +18,6 @@
   background: transparent;
   font-weight: bold;
   text-transform: uppercase;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
@@ -29,6 +28,8 @@
 }
 
 .garage-button.large {
+  width: max-content;
+  justify-self: center;
   border-radius: 8px;
   padding: 8px 24px;
   font-size: 24px;
@@ -40,7 +41,8 @@
   box-shadow: 0 0 8px #e0b3ff, 0 0 16px #e0b3ff;
 }
 
-.garage-button.purple:hover {
+.garage-button.purple:hover:not(:disabled) {
+  cursor: pointer;
   color: #fff;
   border-color: #fff;
   box-shadow: 0 0 12px #e0b3ff, 0 0 24px #e0b3ff, 0 0 36px #e0b3ff;
@@ -52,7 +54,8 @@
   box-shadow: 0 0 8px #b3ffd0, 0 0 16px #b3ffd0;
 }
 
-.garage-button.green:hover {
+.garage-button.green:hover:not(:disabled) {
+  cursor: pointer;
   color: #fff;
   border-color: #fff;
   box-shadow: 0 0 12px #b3ffd0, 0 0 24px #b3ffd0, 0 0 36px #b3ffd0;
@@ -64,7 +67,8 @@
   box-shadow: 0 0 8px #ffb3b3, 0 0 16px #ffb3b3;
 }
 
-.garage-button.red:hover {
+.garage-button.red:hover:not(:disabled) {
+  cursor: pointer;
   color: #fff;
   border-color: #fff;
   box-shadow: 0 0 12px #ffb3b3, 0 0 24px #ffb3b3, 0 0 36px #ffb3b3;

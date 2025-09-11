@@ -7,7 +7,7 @@ import {
   useStopEngineMutation,
 } from '../../services/carsApi';
 import type { Car, CarRowHandle } from '../../types';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { declareWinner, resetWinner } from '../../store/winnersSlice';
 
 type Props = {
@@ -25,6 +25,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
   const [driveEngine] = useDriveEngineMutation();
   const [stopEngine] = useStopEngineMutation();
   const dispatch = useAppDispatch();
+  const selectedCarId = useAppSelector((state) => state.garage.selectedCarId);
 
   const [isStarting, setIsStarting] = useState(false);
   const [isDriving, setIsDriving] = useState(false);
@@ -42,7 +43,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       const carW = carRef.current?.clientWidth ?? 0;
       const maxX = Math.max(0, laneW - carW);
       const durationMs = Math.max(300, Math.round(distance / velocity));
-      const timeSec = durationMs / 1000;
+      const time = durationMs / 1000;
 
       if (carRef.current) {
         animRef.current?.cancel();
@@ -60,7 +61,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
         .unwrap()
         .then(() => {
           // report attempt; slice accepts only the first finisher
-          dispatch(declareWinner({ id: car.id, name: car.name, timeSec }));
+          dispatch(declareWinner({ id: car.id, name: car.name, time }));
         })
         .catch((err) => {
           if (err?.originalStatus === 500) {
@@ -125,7 +126,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       <div className="car-row-buttons">
         <div className="car-row-buttons__edit">
           <button
-            className="garage-button small purple"
+            className={`garage-button small ${ selectedCarId === car.id ? 'green' : 'purple'}`}
             type="button"
             onClick={() => onSelect(car.id)}
           >
