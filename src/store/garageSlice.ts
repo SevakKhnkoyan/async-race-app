@@ -4,7 +4,7 @@ import { GarageState } from '../types';
 const initialState: GarageState = {
   page: 1,
   selectedCarId: null,
-  color: '',
+  color: '#e0b3ff',
   name: '',
 };
 

@@ -80,7 +80,7 @@ export const WinnerPopup = () => {
               handleCloseWinner();
             }}
           >
-            Race Again
+            Cancel
           </button>
         </div>
       </div>

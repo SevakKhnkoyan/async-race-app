@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Garage from './pages/garage/garage/Garage';
+import Garage from './pages/garage/garagePage/Garage';
 import Winners from './pages/winners/Winners';
 
 const App: React.FC = () => {
