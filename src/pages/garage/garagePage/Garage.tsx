@@ -15,6 +15,7 @@ import { PAGE_SIZE } from '../../../constants';
 import { CarRow } from '../carRow/CarRow';
 import { CarRowHandle } from '../../../types';
 import { WinnerPopup } from '../winnerPopup/WinnerPopup';
+import { useDeleteWinnerMutation } from '../../../services/winnersApi';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ const Garage: React.FC = () => {
   const total = data?.total ?? 0;
   const [createCar, { isLoading: isCreating }] = useCreateCarMutation();
   const [deleteCar] = useDeleteCarMutation();
+  const [deleteWinner] = useDeleteWinnerMutation();
   const rowRefs = useRef(new Map<number, CarRowHandle>());
   const winner = useAppSelector((s) => s.winners.winner);
 
@@ -70,7 +72,10 @@ const Garage: React.FC = () => {
                 ref={attachRowRef(car.id)}
                 car={car}
                 onSelect={(id) => dispatch(selectCarForEditing(id))}
-                onDelete={(id) => deleteCar(id)}
+                onDelete={(id) => {
+                  deleteCar(id);
+                  deleteWinner(id);
+                }}
               />
             ))
           )}

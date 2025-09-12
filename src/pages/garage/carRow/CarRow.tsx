@@ -1,5 +1,5 @@
 import './CarRow.scss';
-import { forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { CarIcon } from './CarIcon';
 import {
   useStartEngineMutation,
@@ -8,7 +8,8 @@ import {
 } from '../../../services/carsApi';
 import type { Car, CarRowHandle } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { declareWinner, resetWinner } from '../../../store/winnersSlice';
+import { resetWinner } from '../../../store/winnersSlice';
+import { declareWinnerIfEmpty } from '../../../store/winnersThunks';
 
 type Props = {
   car: Car;
@@ -20,6 +21,8 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
   const laneRef = useRef<HTMLDivElement>(null);
   const carRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<Animation | null>(null);
+  const runIdRef = useRef(0); // invalidates older runs for THIS row
+  const drivePromiseRef = useRef<ReturnType<typeof driveEngine> | null>(null); // holds the mutation promise
 
   const [startEngine] = useStartEngineMutation();
   const [driveEngine] = useDriveEngineMutation();
@@ -34,6 +37,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
 
   const start = useCallback(async () => {
     if (isStarting || isDriving || isBroken) return;
+    const myRunId = ++runIdRef.current;
     try {
       setIsBroken(false);
       setIsStarting(true);
@@ -57,11 +61,13 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
       setIsStarting(false);
       setIsDriving(true);
 
-      driveEngine(car.id)
-        .unwrap()
+      const p = driveEngine(car.id); // don't unwrap yet; keep the abort handle
+      drivePromiseRef.current = p;
+
+      p.unwrap()
         .then(() => {
-          // report attempt; slice accepts only the first finisher
-          dispatch(declareWinner({ id: car.id, name: car.name, time }));
+          if (myRunId !== runIdRef.current) return;
+          dispatch(declareWinnerIfEmpty({ id: car.id, name: car.name, time }));
         })
         .catch((err) => {
           if (err?.originalStatus === 500) {
@@ -77,6 +83,11 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
   }, [car.id, car.name, dispatch, isStarting, isDriving, isBroken, startEngine, driveEngine]);
 
   const stop = useCallback(async () => {
+    // 1) invalidate any pending start/drive for this row
+    runIdRef.current++;
+    // 2) abort the in-flight drive request (RTKQ mutation trigger supports abort())
+    drivePromiseRef.current?.abort?.();
+    drivePromiseRef.current = null;
     try {
       await stopEngine(car.id).unwrap();
     } finally {
@@ -121,6 +132,15 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
 
   useImperativeHandle(ref, () => ({ start, stop }), [start, stop]);
 
+  useEffect(
+    () => () => {
+      runIdRef.current++;
+      drivePromiseRef.current?.abort?.();
+      animRef.current?.cancel();
+    },
+    [],
+  );
+
   return (
     <div className="car-row">
       <div className="car-row-buttons">
@@ -136,6 +156,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
             className="garage-button small red"
             type="button"
             onClick={() => onDelete(car.id)}
+            disabled={isStarting || isDriving}
           >
             Delete
           </button>

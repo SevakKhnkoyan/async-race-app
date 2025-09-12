@@ -69,6 +69,7 @@ const Winners: React.FC = () => {
             <div className="th">
               <button
                 type="button"
+                disabled={total === 0}
                 className={`garage-button small ${sort === 'wins' ? 'green' : 'purple'}`}
                 onClick={() => toggleSort('wins')}
               >
@@ -78,6 +79,7 @@ const Winners: React.FC = () => {
             <div className="th">
               <button
                 type="button"
+                disabled={total === 0}
                 className={`garage-button small ${sort === 'time' ? 'green' : 'purple'}`}
                 onClick={() => toggleSort('time')}
               >
@@ -92,8 +94,12 @@ const Winners: React.FC = () => {
             ))}
 
             {isFetching && <Loader />}
-            {!isFetching && (data?.items.length ?? 0) === 0 && (
-              <div className="garage-text">No winners yet.</div>
+            {!isFetching && total === 0 && (
+              <div className="garage-empty__title">
+                <p>┌──────────────────┐</p>
+                <p>No winners yet</p>
+                <p>└──────────────────┘</p>
+              </div>
             )}
           </div>
         </div>

@@ -4,8 +4,9 @@ import { carsApi } from '../services/carsApi.ts';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import winnersReducer from './winnersSlice.ts';
 import { winnersApi } from '../services/winnersApi.ts';
+import { listeners } from './listeners.ts';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     [carsApi.reducerPath]: carsApi.reducer,
     [winnersApi.reducerPath]: winnersApi.reducer,
@@ -13,7 +14,7 @@ const store = configureStore({
     winners: winnersReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(carsApi.middleware, winnersApi.middleware),
+    getDefaultMiddleware().concat(carsApi.middleware, winnersApi.middleware, listeners.middleware),
   devTools: import.meta.env.NODE_ENV !== 'production',
 });
 
