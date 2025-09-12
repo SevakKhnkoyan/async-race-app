@@ -1,8 +1,9 @@
 # async-race-app
 # Async Race
+server https://github.com/mikhama/async-race-api
 
 **Deployed UI:** [https://async-race-app-sage.vercel.app/](https://async-race-app-sage.vercel.app/)
-**Estimated Score:** **350 / 400** (all features implemented **except** “Actions during the race”)
+**Estimated Score:** **400 / 400** (all features implemented)
 
 A single‑page React + TypeScript app for the *Async Race* task. Manage a garage of cars, run races with start/stop/ reset controls, and track winners with pagination & sorting.
 
@@ -40,7 +41,8 @@ npm run dev
 
 ---
 
-## Checklist **(370 / 400 pts)** Overall Code Quality. (100 points) Skipped during self-check
+## Checklist **(400 / 400 pts)**
+Overall Code Quality. (100 points) Skipped during self-check
 
 ### 🚀 UI Deployment
 
@@ -97,14 +99,13 @@ npm run dev
 ## Score Calculation
 
 * Total: **400 pts**
-* Missing: **Some Actions during the race** → **30 pts**
-* **Estimated Score:** **370 / 400**
+* **Estimated Score:** **400 / 400**
 
 ---
 
 ## Notes / Trade‑offs
 
-* The race “some actions during the race” control is intentionally left out to focus on robust animations, state, and data integrity.
+* Focus on robust animations, state, and data integrity.
 * Data fetching uses RTK Query with caching and tag‑based invalidation.
 
 ---
