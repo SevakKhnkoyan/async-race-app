@@ -42,57 +42,56 @@ npm run dev
 ---
 
 ## Checklist **(400 / 400 pts)**
-Overall Code Quality. (100 points) Skipped during self-check
 
 ### 🚀 UI Deployment
 
-* [x] **Deployed UI** on Vercel — link at the top of this README
+* ✅ **Deployed UI** on Vercel — link at the top of this README
 
-### ✅ Requirements to Commits and Repository
+###  Requirements to Commits and Repository
 
-* [x] Commit guidelines compliance (clear, conventional commit style)
-* [x] Checklist included in README.md
-* [x] Score calculated and placed at the top
-* [x] UI deployment link placed at the top
+* ✅ Commit guidelines compliance (clear, conventional commit style)
+* ✅ Checklist included in README.md
+* ✅ Score calculated and placed at the top
+* ✅ UI deployment link placed at the top
 
 ### Basic Structure (**80 pts**)
 
-* [x] **Two Views** (10): *Garage*, *Winners*
-* [x] **Garage View Content** (30): view name, car creation & editing panel, race control panel, garage section
-* [x] **Winners View Content** (10): view name, winners table, pagination
-* [x] **Persistent State** (30): page numbers & inputs preserved across navigation
+* ✅ **Two Views** (10): *Garage*, *Winners*
+* ✅ **Garage View Content** (30): view name, car creation & editing panel, race control panel, garage section
+* ✅ **Winners View Content** (10): view name, winners table, pagination
+* ✅ **Persistent State** (30): page numbers & inputs preserved across navigation
 
 ### Garage View (**90 pts**)
 
-* [x] **CRUD** (20): create/update/delete cars; validation for empty/too‑long names; deleting removes from *garage* and *winners*
-* [x] **Color Selection** (10): RGB palette with live color on car image
-* [x] **Random Cars** (20): create 100 random cars per click (brand + model; random color)
-* [x] **Car Management Buttons** (10)
-* [x] **Pagination** (10): 7 cars per page
-* [x] **EXTRA (20)**: graceful empty garage; auto step back when last car on a page is deleted
+* ✅ **CRUD** (20): create/update/delete cars; validation for empty/too‑long names; deleting removes from *garage* and *winners*
+* ✅ **Color Selection** (10): RGB palette with live color on car image
+* ✅ **Random Cars** (20): create 100 random cars per click (brand + model; random color)
+* ✅ **Car Management Buttons** (10)
+* ✅ **Pagination** (10): 7 cars per page
+* ✅ **EXTRA (20)**: graceful empty garage; auto step back when last car on a page is deleted
 
 ### 🏆 Winners View (**50 pts**)
 
-* [x] **Display Winners** (15): car appears after it wins; wins increment; best time kept if improved
-* [x] **Pagination** (10): 10 per page
-* [x] **Winners Table** (15): №, image, name, wins, best time (s)
-* [x] **Sorting** (10): by wins and best time (asc/desc)
+* ✅ **Display Winners** (15): car appears after it wins; wins increment; best time kept if improved
+* ✅ **Pagination** (10): 10 per page
+* ✅ **Winners Table** (15): №, image, name, wins, best time (s)
+* ✅ **Sorting** (10): by wins and best time (asc/desc)
 
 ### 🚗 Race (**170 pts**)
 
-* [x] **Start Engine Animation** (20): handles velocity/drive; stops on 500 error
-* [x] **Stop Engine Animation** (20): returns car to start
-* [x] **Responsive Animation** (30): smooth on ≥500px screens
-* [x] **Start Race Button** (10): starts all cars on page
-* [x] **Reset Race Button** (15): returns all cars to starting positions
-* [x] **Winner Announcement** (5): popup/banner shows the winning car
-* [x] **Button States** (20): prevent invalid actions (disable appropriately)
-* [ ] **Actions during the race** (50): **not implemented** — predictable behavior while adding/editing/deleting cars, changing page/view during an active race
+* ✅ **Start Engine Animation** (20): handles velocity/drive; stops on 500 error
+* ✅ **Stop Engine Animation** (20): returns car to start
+* ✅ **Responsive Animation** (30): smooth on ≥500px screens
+* ✅ **Start Race Button** (10): starts all cars on page
+* ✅ **Reset Race Button** (15): returns all cars to starting positions
+* ✅ **Winner Announcement** (5): popup/banner shows the winning car
+* ✅ **Button States** (20): prevent invalid actions (disable appropriately)
+* ✅ **Actions during the race** (50): predictable behavior while adding/editing/deleting cars, changing page/view during an active race
 
 ### 🎨 Prettier and ESLint (**10 pts**)
 
-* [x] **Prettier** (5): `format` & `ci:format` scripts
-* [x] **ESLint (Airbnb)** (5): strict TS config and `lint` script
+* ✅ **Prettier** (5): `format` & `ci:format` scripts
+* ✅ **ESLint (Airbnb)** (5): strict TS config and `lint` script
 
 ---
 
