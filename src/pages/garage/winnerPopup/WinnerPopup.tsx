@@ -1,12 +1,12 @@
 import './WinnerPopup.scss';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { resetWinner } from '../../../store/winnersSlice';
+import { setIsWinnerBannerOpen } from '../../../store/winnersSlice';
 
 export const WinnerPopup = () => {
   const winner = useAppSelector((s) => s.winners.winner);
   const dispatch = useAppDispatch();
 
-  const handleCloseWinner = () => dispatch(resetWinner());
+  const handleCloseWinner = () => dispatch(setIsWinnerBannerOpen(false));
 
   return (
     <div

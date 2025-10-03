@@ -16,6 +16,7 @@ import { CarRow } from '../carRow/CarRow';
 import { CarRowHandle } from '../../../types';
 import { WinnerPopup } from '../winnerPopup/WinnerPopup';
 import { useDeleteWinnerMutation } from '../../../services/winnersApi';
+import { resetWinner } from '../../../store/winnersSlice';
 
 const Garage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ const Garage: React.FC = () => {
   const [deleteCar] = useDeleteCarMutation();
   const [deleteWinner] = useDeleteWinnerMutation();
   const rowRefs = useRef(new Map<number, CarRowHandle>());
-  const winner = useAppSelector((s) => s.winners.winner);
+  const isWinnerBannerOpen = useAppSelector((s) => s.winners.isWinnerBannerOpen);
 
   // If current page becomes empty but there are cars overall, go back one page
   useEffect(() => {
@@ -47,12 +48,13 @@ const Garage: React.FC = () => {
 
   const resetAll = () => {
     rowRefs.current.forEach((handle) => handle.stop?.());
+    dispatch(resetWinner());
   };
 
   return (
     <>
       {(isCreating || isFetching) && <Loader />}
-      {winner && <WinnerPopup />}
+      {isWinnerBannerOpen && <WinnerPopup />}
 
       <div className="view">
         <Header />

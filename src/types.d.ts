@@ -26,6 +26,7 @@ export type WinnerInfo = { id: number; name: string; wins?: number; time: number
 export type RaceState = {
   winner: WinnerInfo | null;
   page: number;
+  isWinnerBannerOpen: boolean;
 };
 
 export type WinnerSortField = 'wins' | 'time';

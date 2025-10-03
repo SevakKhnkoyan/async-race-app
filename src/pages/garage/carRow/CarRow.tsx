@@ -166,7 +166,7 @@ export const CarRow = forwardRef<CarRowHandle, Props>(({ car, onSelect, onDelete
             className="garage-button small green"
             type="button"
             onClick={start}
-            disabled={isStarting || isDriving}
+            disabled={isStarting || isDriving || isBroken}
           >
             {isStarting ? 'Go!!!' : 'Start'}
           </button>
