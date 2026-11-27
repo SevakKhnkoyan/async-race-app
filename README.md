@@ -1,133 +1,53 @@
-# async-race-app
 # Async Race
-server https://github.com/mikhama/async-race-api
 
-**Deployed UI:** [https://async-race-app-sage.vercel.app/](https://async-race-app-sage.vercel.app/)
-**Estimated Score:** **400 / 400** (all features implemented)
+A browser-based racing simulator built with React and TypeScript. Manage a virtual garage, coordinate asynchronous races and track winners through a REST API.
 
-A single‑page React + TypeScript app for the *Async Race* task. Manage a garage of cars, run races with start/stop/ reset controls, and track winners with pagination & sorting.
-
----
-
-## Tech Stack
-
-* **React 18**, **TypeScript**, **Vite**
-* **Redux Toolkit** & **RTK Query** for state and data fetching
-* **SCSS** for styling
-* Deployed on **Vercel**
-
----
-
-## Getting Started (Local)
-
-> The interviewer will run their own backend; these steps are for local development.
-
-```bash
-# 1) Install
-npm i
-
-# 2) Run dev server
-npm run dev
-```
-
----
+**[Live frontend](https://async-race-app-sage.vercel.app/)** · **[Required backend](https://github.com/mikhama/async-race-api)**
 
 ## Features
 
-* **Garage**: create/update/delete cars, color picker (RGB), random 100 cars generator, pagination (7 per page), per‑car controls.
-* **Race Controls**: start/stop per car, start all, reset all, announcement of winner.
-* **Winners**: table with car №, image, name, wins, best time (s); pagination (10 per page); sorting by wins/time.
-* **Persistence**: view state (page/sort, forms) preserved when navigating between views.
+- Create, edit and delete cars, choose colors and generate 100 randomized cars.
+- Start and stop individual cars or race all cars on the current page; reset the race and announce the winner.
+- Browse a paginated garage and a sortable winners table with win counts and best times.
+- Preserve garage and winners view state when navigating between views.
 
----
+## Engineering highlights
 
-## Checklist **(400 / 400 pts)**
+- React 19, TypeScript and Vite for the frontend.
+- Redux Toolkit slices for UI state and RTK Query for REST requests, caching and tag-based invalidation.
+- Redux listener middleware to persist winner results and update existing records.
+- Component-level race controls and SCSS styling.
 
-### 🚀 UI Deployment
+## Run locally
 
-* ✅ **Deployed UI** on Vercel — link at the top of this README
+The frontend requires the separate [Async Race API](https://github.com/mikhama/async-race-api). Start it according to its README and ensure it is available at `http://127.0.0.1:3000`. The frontend currently targets this address, including in the hosted demo.
 
-###  Requirements to Commits and Repository
-
-* ✅ Commit guidelines compliance (clear, conventional commit style)
-* ✅ Checklist included in README.md
-* ✅ Score calculated and placed at the top
-* ✅ UI deployment link placed at the top
-
-### Basic Structure (**80 pts**)
-
-* ✅ **Two Views** (10): *Garage*, *Winners*
-* ✅ **Garage View Content** (30): view name, car creation & editing panel, race control panel, garage section
-* ✅ **Winners View Content** (10): view name, winners table, pagination
-* ✅ **Persistent State** (30): page numbers & inputs preserved across navigation
-
-### Garage View (**90 pts**)
-
-* ✅ **CRUD** (20): create/update/delete cars; validation for empty/too‑long names; deleting removes from *garage* and *winners*
-* ✅ **Color Selection** (10): RGB palette with live color on car image
-* ✅ **Random Cars** (20): create 100 random cars per click (brand + model; random color)
-* ✅ **Car Management Buttons** (10)
-* ✅ **Pagination** (10): 7 cars per page
-* ✅ **EXTRA (20)**: graceful empty garage; auto step back when last car on a page is deleted
-
-### 🏆 Winners View (**50 pts**)
-
-* ✅ **Display Winners** (15): car appears after it wins; wins increment; best time kept if improved
-* ✅ **Pagination** (10): 10 per page
-* ✅ **Winners Table** (15): №, image, name, wins, best time (s)
-* ✅ **Sorting** (10): by wins and best time (asc/desc)
-
-### 🚗 Race (**170 pts**)
-
-* ✅ **Start Engine Animation** (20): handles velocity/drive; stops on 500 error
-* ✅ **Stop Engine Animation** (20): returns car to start
-* ✅ **Responsive Animation** (30): smooth on ≥500px screens
-* ✅ **Start Race Button** (10): starts all cars on page
-* ✅ **Reset Race Button** (15): returns all cars to starting positions
-* ✅ **Winner Announcement** (5): popup/banner shows the winning car
-* ✅ **Button States** (20): prevent invalid actions (disable appropriately)
-* ✅ **Actions during the race** (50): predictable behavior while adding/editing/deleting cars, changing page/view during an active race
-
-### 🎨 Prettier and ESLint (**10 pts**)
-
-* ✅ **Prettier** (5): `format` & `ci:format` scripts
-* ✅ **ESLint (Airbnb)** (5): strict TS config and `lint` script
-
----
-
-## Score Calculation
-
-* Total: **400 pts**
-* **Estimated Score:** **400 / 400**
-
----
-
-## Notes / Trade‑offs
-
-* Focus on robust animations, state, and data integrity.
-* Data fetching uses RTK Query with caching and tag‑based invalidation.
-
----
-
-## Folder Structure (excerpt)
-
+```bash
+npm ci
+npm run dev
 ```
+
+Open the URL printed by Vite.
+
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Development server |
+| `npm run build` | Type-check and production build |
+| `npm run lint` | ESLint |
+| `npm run preview` | Preview production build |
+
+## Source layout
+
+```text
 src/
-  components/
-    Header/ Footer/ Loader/ …
-  pages/
-    garage/
-      garagePage/
-        Garage.tsx
-    winners/
-      Winners.tsx
-  services/  # RTK Query APIs (carsApi, winnersApi)
-  store/     # Redux store & slices
-  styles/
+  components/   Shared header, footer and loader
+  pages/        Garage, car controls and winners
+  services/     RTK Query API definitions
+  store/        Redux slices, hooks and listener middleware
+  constants.ts  Garage configuration and car data
+  utils.ts      Shared utilities
 ```
 
----
+## Project background
 
-## License
-
-MIT (for educational purposes)
+Built as a frontend engineering assessment focused on asynchronous workflows, state management and API integration. The original task checklist is preserved in [docs/assessment.md](docs/assessment.md).
